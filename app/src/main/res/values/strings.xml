@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GremioApp</string>
+    <string name="title_activity_cadastro">CadastroActivity</string>
+</resources>
