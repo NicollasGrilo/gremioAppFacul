@@ -27,7 +27,7 @@ public class DatabaseController {
         valores = new ContentValues();
         valores.put("nome", _Nome);
         valores.put("email", _Email);
-        valores.put("senha", _Senha);
+        valores.put("password", _Senha);
 
         resultado = db.insert("users", null, valores);
         db.close();
@@ -68,7 +68,7 @@ public class DatabaseController {
     public Cursor getLogin(String _email, String _senha) {
         Cursor cursor;
         String[] campos = { "id", "nome", "email", "password", "roles" };
-        String where = "email = '" + _email + "' and senha = '" + _senha + "'";
+        String where = "email = '" + _email + "' and password = '" + _senha + "'";
         db = banco.getReadableDatabase();
         cursor = db.query("users", campos, where, null, null, null,
                 null, null);

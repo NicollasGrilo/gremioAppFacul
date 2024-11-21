@@ -5,6 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Menu">
+    android:background="#161917"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/menuTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Comunity"
+        android:textSize="32sp"
+        android:textColor="#E1E3DB"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

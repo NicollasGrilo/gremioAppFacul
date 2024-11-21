@@ -47,7 +47,7 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         txtEmail = etEmail.getText().toString();
         txtSenha = etSenha.getText().toString();
 
-        erro = VerificaDados();
+        erro = verificaDados();
         if(!erro){
             DatabaseController db = new DatabaseController(getBaseContext());
             String resultado;
@@ -58,7 +58,7 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public boolean VerificaDados() {
+    public boolean verificaDados() {
         if (txtNome.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Atenção - O campo NOME deve ser preenchido!", Toast.LENGTH_LONG).show();
             return true;
