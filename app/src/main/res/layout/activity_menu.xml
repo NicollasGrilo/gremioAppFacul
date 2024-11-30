@@ -5,18 +5,36 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#161917"
-    android:padding="16dp">
+    android:background="@color/black" >
 
-    <TextView
-        android:id="@+id/menuTitulo"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <TextView
+            android:id="@+id/menuTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:layout_marginStart="25dp"
+            android:text="Comunity"
+            android:textColor="#E1E3DB"
+            android:textSize="32sp" />
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="Comunity"
-        android:textSize="32sp"
-        android:textColor="#E1E3DB"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:background="#161917"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
