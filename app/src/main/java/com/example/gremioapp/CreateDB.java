@@ -39,7 +39,7 @@ public class CreateDB extends SQLiteOpenHelper {
                 + "titulo TEXT NOT NULL,"
                 + "descricao TEXT,"
                 + "local TEXT,"
-                + "localDateTime TEXT,"
+                + "localDateTime TEXT DEFAULT CURRENT_TIMESTAMP,"
                 + "user INTEGER,"
                 + "image TEXT,"
                 + "FOREIGN KEY (user) REFERENCES users(id)"

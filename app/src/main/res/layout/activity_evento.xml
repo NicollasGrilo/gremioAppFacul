@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <EditText
-        android:id="@+id/etNome"
+        android:id="@+id/etTitulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -37,7 +37,7 @@
         app:layout_constraintWidth_percent="0.8"/>
 
     <EditText
-        android:id="@+id/etEmail"
+        android:id="@+id/etDescricao"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -46,13 +46,13 @@
         android:textColor="#E1E3DB"
         android:textColorHint="#E1E3DB"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@id/etNome"
+        app:layout_constraintTop_toBottomOf="@id/etTitulo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.8"/>
 
     <EditText
-        android:id="@+id/etSenha"
+        android:id="@+id/etLocal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -61,23 +61,50 @@
         android:textColor="#E1E3DB"
         android:textColorHint="#E1E3DB"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/etEmail"
+        app:layout_constraintTop_toBottomOf="@id/etDescricao"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.8"/>
 
+    <Button
+        android:id="@+id/btnImagem"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="10dp"
+        android:backgroundTint="#70160E"
+        android:text="Anexar Imagem"
+        android:textColor="#E1E3DB"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etLocal"
+        app:layout_constraintWidth_percent="0.6" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="Imagem Selecionada"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toBottomOf="@+id/btnImagem" />
+
 
     <Button
         android:id="@+id/btnRegistrar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="104dp"
         android:layout_marginTop="24dp"
-        android:text="Registrar evento"
         android:backgroundTint="#70160E"
+        android:text="Registrar evento"
         android:textColor="#E1E3DB"
-        app:layout_constraintTop_toBottomOf="@id/etSenha"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.6"/>
+        app:layout_constraintHorizontal_bias="0.776"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etLocal"
+        app:layout_constraintWidth_percent="0.6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

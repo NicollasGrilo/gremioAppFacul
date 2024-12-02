@@ -1,6 +1,7 @@
 package com.example.gremioapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -56,6 +57,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void salvarId(int id) {
+        SharedPreferences sharedPreferences = getSharedPreferences("usuarioPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("id", id);
+        editor.apply();
+    }
+
+
+
     public boolean VerificaDados() {
         String Email = txtEmail.getText().toString();
         String Senha = txtSenha.getText().toString();
@@ -72,15 +82,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         DatabaseController bd = new DatabaseController(getBaseContext());
 
-        Cursor dados = bd.getLogin(Email, Senha) ;
+        Integer dados = bd.getLogin(Email, Senha);
 
-        if(dados.moveToFirst()){
+        if(dados != -1){
+            salvarId(dados);
             return true;
         }else{
             Toast.makeText(getApplicationContext(), "Usuário / senha não cadastrada!", Toast.LENGTH_LONG).show();
             return false;
         }
-
     }
-
 }
