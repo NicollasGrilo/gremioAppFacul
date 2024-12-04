@@ -41,7 +41,7 @@ public class CreateDB extends SQLiteOpenHelper {
                 + "local TEXT,"
                 + "localDateTime TEXT DEFAULT CURRENT_TIMESTAMP,"
                 + "user INTEGER,"
-                + "image TEXT,"
+                + "image BLOB,"
                 + "FOREIGN KEY (user) REFERENCES users(id)"
                 + ");";
         db.execSQL(sqlEventos);

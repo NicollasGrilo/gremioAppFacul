@@ -24,6 +24,44 @@
             android:text="Comunity"
             android:textColor="#E1E3DB"
             android:textSize="32sp" />
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/txtTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Título do Evento"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtDescricao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descrição do Evento"
+                android:textColor="@android:color/darker_gray"/>
+
+            <TextView
+                android:id="@+id/txtLocal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Local"
+                android:textColor="@android:color/darker_gray"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgEvento"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="centerCrop"/>
+
+
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

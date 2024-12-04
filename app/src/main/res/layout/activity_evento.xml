@@ -93,7 +93,7 @@
 
 
     <Button
-        android:id="@+id/btnRegistrar"
+        android:id="@+id/btnRegistrarEvento"
         android:layout_width="160dp"
         android:layout_height="50dp"
         android:layout_marginLeft="104dp"

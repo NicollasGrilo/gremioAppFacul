@@ -2,6 +2,8 @@ package com.example.gremioapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -18,6 +20,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.InterfaceAddress;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -28,17 +33,31 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
     private static final int PICK_IMAGE_REQUEST = 1;
     private Button buttonImg;
     private ImageView imageView;
+    private Uri selectedImg;
+    private byte[] imageBytes;
 
     EditText etTitulo, etDescricao, etLocal;
 
     String txtTitulo, txtDescricao, txtLocal;
 
+
+
     private final ActivityResultLauncher<String> pickImage =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
                     imageView.setImageURI(uri);
+
+                    try {
+                        imageBytes = pegarImagemDoURI(uri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Erro ao carregar a imagem.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
+
+    public Evento(int id, String titulo, String descricao, String local, String localDateTime) {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +71,6 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
             pickImage.launch("image/*");
         });
     }
-
     public Integer getUserId() {
         SharedPreferences sharedPreferences = getSharedPreferences("usuarioPrefs", MODE_PRIVATE);
         return sharedPreferences.getInt("id", -1);
@@ -60,31 +78,24 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Boolean erro = false;
+        if (v.getId()==R.id.btnRegistrarEvento) {
+            // carregar a tela do menu
+            if (verificaDados()) {
+                Intent telaMenu = new Intent(this, Menu.class);
+                startActivity(telaMenu);
+            } else {
+                Toast.makeText(getApplicationContext(), "erro", Toast.LENGTH_SHORT).show();
+            }
+        }
 
+    }
+
+    public boolean verificaDados() {
         txtTitulo = etTitulo.getText().toString();
         txtDescricao = etDescricao.getText().toString();
         txtLocal = etLocal.getText().toString();
 
-        erro = verificaDados();
 
-        Integer userId = getUserId();
-
-        if(!erro){
-            Date now = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String formattedDate = dateFormat.format(now);
-
-            DatabaseController db = new DatabaseController(getBaseContext());
-            String resultado;
-
-            resultado = db.novoEvento(txtTitulo, txtDescricao, txtLocal, formattedDate, userId, "image.jpg");
-
-            Toast.makeText(getApplicationContext(), resultado, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public boolean verificaDados() {
         if (txtLocal.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Atenção - O campo TÍTULO deve ser preenchido!", Toast.LENGTH_LONG).show();
             return true;
@@ -97,6 +108,42 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
             Toast.makeText(getApplicationContext(), "Atenção - O campo LOCAL deve ser preenchido!", Toast.LENGTH_LONG).show();
             return true;
         }
+
+        Integer userId = getUserId();
+
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = dateFormat.format(now);
+
+        DatabaseController db = new DatabaseController(getBaseContext());
+        String resultado;
+
+        if (imageBytes != null) {
+            resultado = db.novoEvento(txtTitulo, txtDescricao, txtLocal, formattedDate, userId, imageBytes);
+        } else {
+            resultado = "Nenhuma imagem selecionada";
+        }
+
+        Toast.makeText(getApplicationContext(), resultado, Toast.LENGTH_LONG).show();
+
         return false;
+    }
+
+    private byte[] pegarImagemDoURI(Uri uri) throws IOException {
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        byte[] buffer = new byte[1024];
+
+        int length;
+
+        while ((length = inputStream.read(buffer)) != -1) {
+            byteArrayOutputStream.write(buffer, 0, length);
+        }
+
+        inputStream.close();
+
+        return byteArrayOutputStream.toByteArray();
     }
 }

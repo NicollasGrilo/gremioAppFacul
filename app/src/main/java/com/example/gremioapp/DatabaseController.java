@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DatabaseController {
 
@@ -42,7 +44,7 @@ public class DatabaseController {
     }
 
     public String novoEvento(String _Titulo, String _Descricao, String _Local, String _LocalTime,
-                             Integer _User, String _Image) {
+                             Integer _User, byte[] _Image) {
         if (_User == -1){
             return "Usuário não logado!";
         }
@@ -64,7 +66,10 @@ public class DatabaseController {
         valores.put("localDateTime", formattedDateTime);
 
         valores.put("user", _User);
-        valores.put("image", _Image);
+
+        if (_Image != null) {
+            valores.put("image", _Image);
+        }
 
         resultado = db.insert("eventos", null, valores);
         db.close();
@@ -74,6 +79,37 @@ public class DatabaseController {
         } else {
             return "Evento publicado!";
         }
+    }
+
+    public List<Evento> listarEventos() {
+        List<Evento> eventos = new ArrayList<>();
+        Cursor cursor = null;
+        String[] campos = {"id", "titulo", "descricao", "local", "localDateTime", "image"};
+
+        db = banco.getReadableDatabase();
+
+        // Consulta para buscar todos os eventos
+        cursor = db.query("eventos", campos, null, null, null, null, "localDateTime DESC");
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // Pega os dados do cursor e cria um objeto Evento
+                int id = cursor.getColumnIndex("id");
+                String titulo = String.valueOf(cursor.getColumnIndex("titulo"));
+                String descricao = String.valueOf(cursor.getColumnIndex("descricao"));
+                String local = String.valueOf(cursor.getColumnIndex("local"));
+                String localDateTime = String.valueOf(cursor.getColumnIndex("localDateTime"));
+                String imagem = String.valueOf(cursor.getColumnIndex("image"));
+
+                // Cria um novo Evento e adiciona à lista
+                eventos.add(new Evento(id, titulo, descricao, local, localDateTime));
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        db.close();
+        return eventos;
     }
 
     public Integer getLogin(String _email, String _senha) {
@@ -101,8 +137,6 @@ public class DatabaseController {
         } else {
             Log.e("getLogin", "Nenhum dado encontrado na consulta.");
         }
-
-
 
         db.close();
         return userId;

@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     public boolean VerificaDados() {
         String Email = txtEmail.getText().toString();
         String Senha = txtSenha.getText().toString();
