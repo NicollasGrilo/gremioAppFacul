@@ -2,16 +2,19 @@ package com.example.gremioapp;
 
 public class EventoClass {
 
+    private int id;
     private String titulo;
     private String descricao;
     private String local;
-    private byte[] imagem; // Imagem armazenada como byte array (pode ser alterado para String caso seja uma URL)
+    private String localDateTime;
+    private byte[] imagem;
 
     // Construtor
-    public EventoClass(String titulo, String descricao, String local, byte[] imagem) {
+    public EventoClass(String titulo, String descricao, String local, String localDateTime, byte[] imagem) {
         this.titulo = titulo;
         this.descricao = descricao;
         this.local = local;
+        this.localDateTime = localDateTime;
         this.imagem = imagem;
     }
 
@@ -38,6 +41,14 @@ public class EventoClass {
 
     public void setLocal(String local) {
         this.local = local;
+    }
+
+    public String getLocalDateTime() {
+        return localDateTime;
+    }
+
+    public void setLocalDateTime(String localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     public byte[] getImagem() {

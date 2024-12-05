@@ -31,7 +31,7 @@ import java.util.Date;
 public class Evento extends AppCompatActivity implements View.OnClickListener {
 
     private static final int PICK_IMAGE_REQUEST = 1;
-    private Button buttonImg;
+    private Button buttonImg, btnRegistrarEvento;
     private ImageView imageView;
     private Uri selectedImg;
     private byte[] imageBytes;
@@ -56,7 +56,7 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
                 }
             });
 
-    public Evento(int id, String titulo, String descricao, String local, String localDateTime) {
+    public Evento() {
     }
 
     @Override
@@ -66,10 +66,14 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
 
         buttonImg = findViewById(R.id.btnImagem);
         imageView = findViewById(R.id.imageView);
+        btnRegistrarEvento = findViewById(R.id.btnRegistrarEvento);
+
 
         buttonImg.setOnClickListener(v -> {
             pickImage.launch("image/*");
         });
+
+        btnRegistrarEvento.setOnClickListener(this);
     }
     public Integer getUserId() {
         SharedPreferences sharedPreferences = getSharedPreferences("usuarioPrefs", MODE_PRIVATE);
@@ -87,7 +91,6 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
                 Toast.makeText(getApplicationContext(), "erro", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
     public boolean verificaDados() {
@@ -96,7 +99,7 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
         txtLocal = etLocal.getText().toString();
 
 
-        if (txtLocal.isEmpty()) {
+        if (txtTitulo.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Atenção - O campo TÍTULO deve ser preenchido!", Toast.LENGTH_LONG).show();
             return true;
         }

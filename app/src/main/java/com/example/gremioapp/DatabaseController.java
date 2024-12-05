@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +51,6 @@ public class DatabaseController {
         }
 
         ContentValues valores;
-
         long resultado;
 
         db = banco.getWritableDatabase();
@@ -59,13 +59,14 @@ public class DatabaseController {
         valores.put("titulo", _Titulo);
         valores.put("descricao", _Descricao);
         valores.put("local", _Local);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = java.sql.Timestamp.valueOf(String.valueOf(_LocalTime));
-        String formattedDateTime = sdf.format(date);
-        valores.put("localDateTime", formattedDateTime);
-
+        valores.put("localDateTime", _LocalTime);
         valores.put("user", _User);
+
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //Date date = java.sql.Timestamp.valueOf(String.valueOf(_LocalTime));
+        //String formattedDateTime = sdf.format(date);
+        //valores.put("localDateTime", formattedDateTime);
+
 
         if (_Image != null) {
             valores.put("image", _Image);
@@ -75,37 +76,41 @@ public class DatabaseController {
         db.close();
 
         if (resultado == -1){
+            Log.e("Database", "Erro ao inserir evento.");
             return "Erro ao publicar o evento.";
         } else {
+            Log.i("Database", "Evento inserido com sucesso!!!");
             return "Evento publicado!";
         }
     }
 
-    public List<Evento> listarEventos() {
-        List<Evento> eventos = new ArrayList<>();
+    public List<EventoClass> listarEventos() {
+        List<EventoClass> eventos = new ArrayList<>();
         Cursor cursor = null;
-        String[] campos = {"id", "titulo", "descricao", "local", "localDateTime", "image"};
+        String[] campos = {"titulo", "descricao", "local", "localDateTime", "image"};
 
         db = banco.getReadableDatabase();
 
         // Consulta para buscar todos os eventos
-        cursor = db.query("eventos", campos, null, null, null, null, "localDateTime DESC");
+        cursor = db.query("eventos", campos, null, null, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 // Pega os dados do cursor e cria um objeto Evento
-                int id = cursor.getColumnIndex("id");
-                String titulo = String.valueOf(cursor.getColumnIndex("titulo"));
-                String descricao = String.valueOf(cursor.getColumnIndex("descricao"));
-                String local = String.valueOf(cursor.getColumnIndex("local"));
-                String localDateTime = String.valueOf(cursor.getColumnIndex("localDateTime"));
-                String imagem = String.valueOf(cursor.getColumnIndex("image"));
+                String titulo = cursor.getString(cursor.getColumnIndexOrThrow("titulo"));
+                String descricao = cursor.getString(cursor.getColumnIndexOrThrow("descricao"));
+                String local = cursor.getString(cursor.getColumnIndexOrThrow("local"));
+                String localDateTime = cursor.getString(cursor.getColumnIndexOrThrow("localDateTime"));
+                byte[] imagem = cursor.getBlob(cursor.getColumnIndexOrThrow("image"));
 
                 // Cria um novo Evento e adiciona à lista
-                eventos.add(new Evento(id, titulo, descricao, local, localDateTime));
+                eventos.add(new EventoClass(titulo, descricao, local, localDateTime, imagem));
             } while (cursor.moveToNext());
 
             cursor.close();
+            Log.i("Database", "Eventos encontrados: " + eventos.size());
+        } else {
+            Log.i("Database", "Nenhum evento encontrado.");
         }
 
         db.close();
@@ -142,12 +147,12 @@ public class DatabaseController {
         return userId;
     }
 
-    public String getUsername(String _email, String _senha) {
-        Cursor cursor = db.query("users", new String[]{"nome"}, "email = ? and password = ?", new String[]{_email, _senha},
+    public String getUsername(int id) {
+        Cursor cursor = db.query("users", new String[]{"nome"}, "id = ?", new String[]{String.valueOf(id)},
                 null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            String usuario = String.valueOf(cursor.getColumnIndex("nome"));
+            String usuario = cursor.getString(cursor.getColumnIndexOrThrow("nome"));
             cursor.close();
             return usuario;
         } else {
@@ -156,4 +161,22 @@ public class DatabaseController {
         }
     }
 
+    public String getEventos(int id) {
+        Cursor cursor = db.query("events", new String[]{"titulo", "descricao", "local"},
+                "id = ?", new String[]{String.valueOf(id)}, null, null, null);
+
+        StringBuilder teste = new StringBuilder();
+
+        String titulo = cursor.getString(cursor.getColumnIndexOrThrow("titulo"));
+        String descricao = cursor.getString(cursor.getColumnIndexOrThrow("descricao"));
+        String local = cursor.getString(cursor.getColumnIndexOrThrow("local"));
+
+        teste.append("Titulo: ").append(titulo)
+                .append("\nDescricao: ").append(descricao)
+                .append("\nLocal: ").append(local);
+
+        cursor.close();
+
+        return teste.toString();
+    }
 }

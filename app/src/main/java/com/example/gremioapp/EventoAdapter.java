@@ -16,35 +16,36 @@ import java.util.List;
 public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoViewHolder> {
 
     private List<EventoClass> eventoList;
-    private Context context;
 
-    public EventoAdapter(List<EventoClass> eventoList, Context context) {
+    public EventoAdapter(List<EventoClass> eventoList) {
         this.eventoList = eventoList;
-        this.context = context;
     }
+
     @Override
     public EventoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_menu, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_evento, parent, false);
         return new EventoViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(EventoViewHolder holder, int position) {
         EventoClass eventoClass = eventoList.get(position);
+
         holder.txtTitulo.setText(eventoClass.getTitulo());
         holder.txtDescricao.setText(eventoClass.getDescricao());
         holder.txtLocal.setText(eventoClass.getLocal());
 
-        // Carrega a imagem (se houver) no ImageView
         if (eventoClass.getImagem() != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(eventoClass.getImagem(), 0, eventoClass.getImagem().length);
             holder.imgEvento.setImageBitmap(bitmap);
+        } else {
+            holder.imgEvento.setImageResource(R.drawable.baseline_home_24);
         }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return eventoList.size();
     }
 
     public static class EventoViewHolder extends RecyclerView.ViewHolder {
@@ -54,10 +55,10 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
 
         public EventoViewHolder(View itemView) {
             super(itemView);
-            txtTitulo = itemView.findViewById(R.id.txtTitulo);
-            txtDescricao = itemView.findViewById(R.id.txtDescricao);
-            txtLocal = itemView.findViewById(R.id.txtLocal);
-            imgEvento = itemView.findViewById(R.id.imgEvento);
+            txtTitulo = itemView.findViewById(R.id.titulo);
+            txtDescricao = itemView.findViewById(R.id.descricao);
+            txtLocal = itemView.findViewById(R.id.local);
+            imgEvento = itemView.findViewById(R.id.imagem);
         }
     }
 
