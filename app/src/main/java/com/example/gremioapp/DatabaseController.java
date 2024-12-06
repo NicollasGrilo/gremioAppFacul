@@ -45,8 +45,8 @@ public class DatabaseController {
     }
 
     public String novoEvento(String _Titulo, String _Descricao, String _Local, String _LocalTime,
-                             Integer _User, byte[] _Image) {
-        if (_User == -1){
+                             String _User, byte[] _Image) {
+        if (_User == null){
             return "Usuário não logado!";
         }
 
@@ -87,7 +87,7 @@ public class DatabaseController {
     public List<EventoClass> listarEventos() {
         List<EventoClass> eventos = new ArrayList<>();
         Cursor cursor = null;
-        String[] campos = {"titulo", "descricao", "local", "localDateTime", "image"};
+        String[] campos = {"user", "titulo", "descricao", "local", "localDateTime", "image"};
 
         db = banco.getReadableDatabase();
 
@@ -97,6 +97,7 @@ public class DatabaseController {
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 // Pega os dados do cursor e cria um objeto Evento
+                String user = cursor.getString(cursor.getColumnIndexOrThrow("user"));
                 String titulo = cursor.getString(cursor.getColumnIndexOrThrow("titulo"));
                 String descricao = cursor.getString(cursor.getColumnIndexOrThrow("descricao"));
                 String local = cursor.getString(cursor.getColumnIndexOrThrow("local"));
@@ -104,7 +105,7 @@ public class DatabaseController {
                 byte[] imagem = cursor.getBlob(cursor.getColumnIndexOrThrow("image"));
 
                 // Cria um novo Evento e adiciona à lista
-                eventos.add(new EventoClass(titulo, descricao, local, localDateTime, imagem));
+                eventos.add(new EventoClass(user, titulo, descricao, local, localDateTime, imagem));
             } while (cursor.moveToNext());
 
             cursor.close();
@@ -113,12 +114,12 @@ public class DatabaseController {
             Log.i("Database", "Nenhum evento encontrado.");
         }
 
-        db.close();
+        //db.close();
         return eventos;
     }
 
-    public Integer getLogin(String _email, String _senha) {
-        Integer userId = -1;
+    public String getLogin(String _email, String _senha) {
+        String username = null;
         Cursor cursor = null;
         String[] campos = { "id", "nome", "email", "password", "roles" };
         String where = "email = '" + _email + "' and password = '" + _senha + "'";
@@ -130,12 +131,12 @@ public class DatabaseController {
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndex("id");
+                int columnValue = cursor.getColumnIndex("nome");
 
-                if (columnIndex >= 0){
-                    userId = cursor.getInt(columnIndex);
+                if (columnValue >= 0){
+                    username = cursor.getString(columnValue);
                 } else {
-                    Log.e("getLogin", "Coluna 'id' não encontrada.");
+                    Log.e("getLogin", "Coluna 'nome' não encontrada.");
                 }
             }
             cursor.close();
@@ -143,8 +144,8 @@ public class DatabaseController {
             Log.e("getLogin", "Nenhum dado encontrado na consulta.");
         }
 
-        db.close();
-        return userId;
+        //db.close();
+        return username;
     }
 
     public String getUsername(int id) {

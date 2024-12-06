@@ -60,7 +60,7 @@
         android:backgroundTint="#B9030F"
         android:textColor="#E1E3DB"
         android:textColorHint="#E1E3DB"
-        android:inputType="textPassword"
+        android:inputType="textLongMessage"
         app:layout_constraintTop_toBottomOf="@id/etDescricao"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

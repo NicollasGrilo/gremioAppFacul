@@ -2,31 +2,24 @@ package com.example.gremioapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InterfaceAddress;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 public class Evento extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,11 +29,7 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
     private Uri selectedImg;
     private byte[] imageBytes;
 
-    EditText etTitulo, etDescricao, etLocal;
-
-    String txtTitulo, txtDescricao, txtLocal;
-
-
+    private EditText etTitulo, etDescricao, etLocal;
 
     private final ActivityResultLauncher<String> pickImage =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
@@ -64,6 +53,10 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evento);
 
+        etTitulo= (EditText) findViewById(R.id.etTitulo);
+        etDescricao= (EditText) findViewById(R.id.etDescricao);
+        etLocal= (EditText) findViewById(R.id.etLocal);
+
         buttonImg = findViewById(R.id.btnImagem);
         imageView = findViewById(R.id.imageView);
         btnRegistrarEvento = findViewById(R.id.btnRegistrarEvento);
@@ -75,9 +68,9 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
 
         btnRegistrarEvento.setOnClickListener(this);
     }
-    public Integer getUserId() {
+    public String getUserId() {
         SharedPreferences sharedPreferences = getSharedPreferences("usuarioPrefs", MODE_PRIVATE);
-        return sharedPreferences.getInt("id", -1);
+        return sharedPreferences.getString("nome", String.valueOf(-1));
     }
 
     @Override
@@ -94,25 +87,9 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
     }
 
     public boolean verificaDados() {
-        txtTitulo = etTitulo.getText().toString();
-        txtDescricao = etDescricao.getText().toString();
-        txtLocal = etLocal.getText().toString();
+        if (isInValid()) return true;
 
-
-        if (txtTitulo.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Atenção - O campo TÍTULO deve ser preenchido!", Toast.LENGTH_LONG).show();
-            return true;
-        }
-        if (txtDescricao.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Atenção - O campo DESCRIÇÃO deve ser preenchido!", Toast.LENGTH_LONG).show();
-            return true;
-        }
-        if (txtLocal.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Atenção - O campo LOCAL deve ser preenchido!", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
-        Integer userId = getUserId();
+        String username = getUserId();
 
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -122,13 +99,30 @@ public class Evento extends AppCompatActivity implements View.OnClickListener {
         String resultado;
 
         if (imageBytes != null) {
-            resultado = db.novoEvento(txtTitulo, txtDescricao, txtLocal, formattedDate, userId, imageBytes);
+            resultado = db.novoEvento(etTitulo.getText().toString(), etDescricao.getText().toString(),
+                    etLocal.getText().toString(), formattedDate, username, imageBytes);
         } else {
             resultado = "Nenhuma imagem selecionada";
         }
 
         Toast.makeText(getApplicationContext(), resultado, Toast.LENGTH_LONG).show();
 
+        return true;
+    }
+
+    private boolean isInValid() {
+        if (Objects.isNull(etTitulo)) {
+            Toast.makeText(getApplicationContext(), "Atenção - O campo TÍTULO deve ser preenchido!", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (Objects.isNull(etDescricao)) {
+            Toast.makeText(getApplicationContext(), "Atenção - O campo DESCRIÇÃO deve ser preenchido!", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (Objects.isNull(etLocal)) {
+            Toast.makeText(getApplicationContext(), "Atenção - O campo LOCAL deve ser preenchido!", Toast.LENGTH_LONG).show();
+            return true;
+        }
         return false;
     }
 

@@ -2,7 +2,6 @@ package com.example.gremioapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId()==R.id.btnLogin) {
             // carregar a tela do menu
-            if (VerificaDados()) {
+            if (VerificaDados()) {  // consulta a base e salva sharePreferences e true or false
                 Intent telaMenu = new Intent(this, Menu.class);
                 startActivity(telaMenu);
             }
@@ -57,10 +56,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void salvarId(int id) {
+    public void salvarSharedPreferences(String nome) {
         SharedPreferences sharedPreferences = getSharedPreferences("usuarioPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("id", id);
+        editor.putString("nome", nome);
         editor.apply();
     }
 
@@ -81,10 +80,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         DatabaseController bd = new DatabaseController(getBaseContext());
 
-        Integer dados = bd.getLogin(Email, Senha);
+        String username = bd.getLogin(Email, Senha);
 
-        if(dados != -1){
-            salvarId(dados);
+        if(username != null){
+            salvarSharedPreferences(username);
             return true;
         }else{
             Toast.makeText(getApplicationContext(), "Usuário / senha não cadastrada!", Toast.LENGTH_LONG).show();

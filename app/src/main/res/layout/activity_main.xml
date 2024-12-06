@@ -5,11 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#161917"
+    android:background="@color/black"
     tools:context=".MainActivity"
     android:id="@+id/MainActivity">
 
-    <!-- Título do Login -->
     <TextView
         android:id="@+id/loginTitle"
         android:layout_width="wrap_content"
@@ -22,23 +21,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Campo de E-mail -->
+    <ImageView
+        android:id="@+id/culturaViva"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_marginTop="38dp"
+        android:src="@drawable/culturaviva"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="117dp"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toBottomOf="@id/loginTitle" />
+
     <EditText
         android:id="@+id/txtEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#B9030F"
         android:hint="E-mail"
         android:inputType="textEmailAddress"
-        android:backgroundTint="#B9030F"
         android:textColor="#E1E3DB"
         android:textColorHint="#E1E3DB"
-        app:layout_constraintTop_toBottomOf="@+id/loginTitle"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/culturaViva"
         app:layout_constraintWidth_percent="0.8" />
 
-    <!-- Campo de Senha -->
     <EditText
         android:id="@+id/txtPassword"
         android:layout_width="0dp"
@@ -54,7 +62,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.8" />
 
-    <!-- Botão de Login -->
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="0dp"

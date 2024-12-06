@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatabaseToolDbSqlDialect">
+    <option name="dialect" value="SQLite" />
+    <option name="dialects">
+      <map>
+        <entry key="$APPLICATION_CONFIG_DIR$/consoles/database-tool/1ed6fee4-ccf4-4b56-9271-e79648a6009f/console.sql" value="SQLite" />
+        <entry key="$APPLICATION_CONFIG_DIR$/consoles/database-tool/2946c94d-0e6b-4280-b3c9-21511114d772/console.sql" value="MariaDB" />
+      </map>
+    </option>
+  </component>
+</project>

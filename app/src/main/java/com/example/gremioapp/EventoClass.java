@@ -3,6 +3,7 @@ package com.example.gremioapp;
 public class EventoClass {
 
     private int id;
+    private String user;
     private String titulo;
     private String descricao;
     private String local;
@@ -10,7 +11,8 @@ public class EventoClass {
     private byte[] imagem;
 
     // Construtor
-    public EventoClass(String titulo, String descricao, String local, String localDateTime, byte[] imagem) {
+    public EventoClass(String user, String titulo, String descricao, String local, String localDateTime, byte[] imagem) {
+        this.user = user;
         this.titulo = titulo;
         this.descricao = descricao;
         this.local = local;
@@ -19,6 +21,15 @@ public class EventoClass {
     }
 
     // Getters e Setters
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
     public String getTitulo() {
         return titulo;
     }
